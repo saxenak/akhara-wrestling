@@ -17,29 +17,28 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    { name: 'About', href: '#about' },
+    { name: 'our story', href: '#about' },
     { name: 'Programs', href: '#programs' },
     { name: 'Coaches', href: '#coaches' },
-    { name: 'Schedule', href: '#schedule' },
     { name: 'Contact', href: '#contact' },
   ];
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* Fixed Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">
+      {/* Navigation - Absolute positioned like FreeGame */}
+      <nav className="absolute top-0 left-0 right-0 z-50 px-6 md:px-12 py-6">
+        <div className="max-w-[1800px] mx-auto flex justify-between items-center">
+          <Link href="/" className="text-xl font-medium tracking-tight">
             AKHARA
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-10">
             {menuItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm uppercase tracking-wider text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-white/70 hover:text-white transition-colors duration-300"
               >
                 {item.name}
               </Link>
@@ -49,9 +48,9 @@ export default function Home() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white"
+            className="md:hidden text-white text-sm"
           >
-            {isMenuOpen ? 'CLOSE' : 'MENU'}
+            {isMenuOpen ? 'Close' : 'Menu'}
           </button>
         </div>
 
@@ -61,7 +60,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-black/95 border-t border-white/10 py-8"
+            className="md:hidden absolute top-full left-0 right-0 bg-black/95 py-8"
           >
             <div className="flex flex-col items-center gap-6">
               {menuItems.map((item) => (
@@ -69,7 +68,7 @@ export default function Home() {
                   key={item.name}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-lg uppercase tracking-wider text-gray-400 hover:text-white transition-colors"
+                  className="text-lg text-white/70 hover:text-white transition-colors"
                 >
                   {item.name}
                 </Link>
@@ -79,84 +78,68 @@ export default function Home() {
         )}
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - FreeGame Style */}
       <motion.section
         ref={heroRef}
         style={{ opacity: heroOpacity, y: heroY }}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative h-screen flex items-center justify-center overflow-hidden"
       >
-        {/* Video Background */}
+        {/* Full Video Background */}
         <div className="absolute inset-0 z-0">
           <video
             autoPlay
             muted
-            loop
+            loop={true}
             playsInline
-            className="w-full h-full object-cover opacity-40"
+            poster="/hero-poster.jpg"
+            className="w-full h-full object-cover opacity-50"
+            onEnded={(e) => {
+              const video = e.currentTarget;
+              video.currentTime = 0;
+              video.play();
+            }}
           >
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
+          {/* Gradient fade to black at bottom */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black" />
         </div>
 
-        {/* Hero Content */}
+        {/* Hero Content - Centered like FreeGame */}
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
+            transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="hero-title text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-8 leading-[0.9]"
           >
-            Own The{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
-              Mat
-            </span>
+            Own The
+            <br />
+            <span className="text-stroke">Mat</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10"
+            transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-base md:text-lg text-white/80 max-w-xl mx-auto font-light leading-relaxed"
           >
             Get the training you need to take charge of how your wrestling journey unfolds — from coaches who know it best.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Link
-              href="#programs"
-              className="px-8 py-4 bg-white text-black font-semibold uppercase tracking-wider hover:bg-gray-200 transition-colors"
-            >
-              View Programs
-            </Link>
-            <Link
-              href="#contact"
-              className="px-8 py-4 border border-white/30 hover:border-white transition-colors uppercase tracking-wider"
-            >
-              Get In Touch
-            </Link>
-          </motion.div>
         </div>
 
         {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          transition={{ delay: 1.2, duration: 0.5 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2"
         >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2"
-          >
-            <div className="w-1 h-2 bg-white/50 rounded-full" />
-          </motion.div>
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            className="w-[1px] h-16 bg-white/30"
+          />
         </motion.div>
       </motion.section>
 
@@ -170,10 +153,10 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
               Champions Are Made Here
             </h2>
-            <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+            <p className="text-white/60 text-lg max-w-3xl mx-auto font-light">
               Akhara of Champions is more than a wrestling club — it&apos;s a family dedicated to developing
               world-class wrestlers through discipline, technique, and mental fortitude.
             </p>
@@ -195,10 +178,10 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-2">
+                <div className="text-4xl md:text-5xl font-bold mb-2">
                   {stat.number}
                 </div>
-                <div className="text-gray-500 uppercase tracking-wider text-sm">
+                <div className="text-white/40 uppercase tracking-wider text-xs">
                   {stat.label}
                 </div>
               </motion.div>
@@ -217,8 +200,8 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Our Programs</h2>
-            <p className="text-gray-400 text-lg max-w-2xl">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Our Programs</h2>
+            <p className="text-white/60 text-lg max-w-2xl font-light">
               Training programs designed for all skill levels — from beginners taking their first steps
               to elite athletes preparing for international competition.
             </p>
@@ -263,18 +246,18 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-black border border-white/10 p-8 hover:border-white/30 transition-colors group"
+                className="bg-black border border-white/10 p-8 hover:border-white/30 transition-colors duration-300 group"
               >
-                <h3 className="text-xl font-bold mb-3 group-hover:text-red-500 transition-colors">
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-white/80 transition-colors">
                   {program.title}
                 </h3>
-                <p className="text-gray-400 mb-6 text-sm">
+                <p className="text-white/50 mb-6 text-sm font-light">
                   {program.description}
                 </p>
                 <ul className="space-y-2">
                   {program.features.map((feature) => (
-                    <li key={feature} className="text-gray-500 text-sm flex items-center gap-2">
-                      <span className="w-1 h-1 bg-red-500 rounded-full" />
+                    <li key={feature} className="text-white/40 text-sm flex items-center gap-2 font-light">
+                      <span className="w-1 h-1 bg-white/40 rounded-full" />
                       {feature}
                     </li>
                   ))}
@@ -294,10 +277,10 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center"
         >
-          <blockquote className="text-2xl md:text-4xl font-light italic text-gray-300 mb-8">
+          <blockquote className="text-2xl md:text-4xl font-light italic text-white/70 mb-8 leading-relaxed">
             &quot;Wrestling teaches you that the only limits are the ones you set for yourself.&quot;
           </blockquote>
-          <cite className="text-gray-500 not-italic uppercase tracking-wider">
+          <cite className="text-white/40 not-italic uppercase tracking-wider text-sm">
             — Akhara Philosophy
           </cite>
         </motion.div>
@@ -313,8 +296,8 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Our Coaches</h2>
-            <p className="text-gray-400 text-lg max-w-2xl">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Our Coaches</h2>
+            <p className="text-white/60 text-lg max-w-2xl font-light">
               Learn from coaches who have competed at the highest levels and are dedicated to
               developing the next generation of champions.
             </p>
@@ -346,12 +329,12 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="w-48 h-48 mx-auto mb-6 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 text-sm">Photo</span>
+                <div className="w-48 h-48 mx-auto mb-6 bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-full flex items-center justify-center">
+                  <span className="text-white/30 text-sm">Photo</span>
                 </div>
-                <h3 className="text-xl font-bold mb-1">{coach.name}</h3>
-                <p className="text-red-500 text-sm uppercase tracking-wider mb-2">{coach.role}</p>
-                <p className="text-gray-500 text-sm">{coach.credentials}</p>
+                <h3 className="text-xl font-semibold mb-1">{coach.name}</h3>
+                <p className="text-white/50 text-sm uppercase tracking-wider mb-2">{coach.role}</p>
+                <p className="text-white/40 text-sm font-light">{coach.credentials}</p>
               </motion.div>
             ))}
           </div>
@@ -368,8 +351,8 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Training Schedule</h2>
-            <p className="text-gray-400 text-lg">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Training Schedule</h2>
+            <p className="text-white/60 text-lg font-light">
               Join us on the mat. All sessions held at our main facility.
             </p>
           </motion.div>
@@ -392,10 +375,10 @@ export default function Home() {
                 className="flex items-center justify-between py-4 border-b border-white/10"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold w-28">{session.day}</span>
-                  <span className="text-gray-500">{session.time}</span>
+                  <span className="text-lg font-medium w-28">{session.day}</span>
+                  <span className="text-white/40 font-light">{session.time}</span>
                 </div>
-                <span className="text-gray-400">{session.program}</span>
+                <span className="text-white/60 font-light">{session.program}</span>
               </motion.div>
             ))}
           </div>
@@ -412,8 +395,8 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Get In Touch</h2>
-            <p className="text-gray-400 text-lg">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Get In Touch</h2>
+            <p className="text-white/60 text-lg font-light">
               Ready to start your wrestling journey? Contact us today.
             </p>
           </motion.div>
@@ -429,27 +412,27 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="Name"
-                className="w-full bg-black border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors"
+                className="w-full bg-transparent border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors font-light"
               />
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full bg-black border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors"
+                className="w-full bg-transparent border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors font-light"
               />
             </div>
             <input
               type="text"
               placeholder="Subject"
-              className="w-full bg-black border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors"
+              className="w-full bg-transparent border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors font-light"
             />
             <textarea
               placeholder="Message"
               rows={5}
-              className="w-full bg-black border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors resize-none"
+              className="w-full bg-transparent border border-white/20 px-4 py-3 focus:border-white/50 focus:outline-none transition-colors resize-none font-light"
             />
             <button
               type="submit"
-              className="w-full py-4 bg-white text-black font-semibold uppercase tracking-wider hover:bg-gray-200 transition-colors"
+              className="w-full py-4 bg-white text-black font-medium uppercase tracking-wider hover:bg-white/90 transition-colors"
             >
               Send Message
             </button>
@@ -457,16 +440,16 @@ export default function Home() {
 
           <div className="mt-16 grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <h4 className="font-semibold mb-2">Location</h4>
-              <p className="text-gray-500 text-sm">Toronto, Ontario</p>
+              <h4 className="font-medium mb-2">Location</h4>
+              <p className="text-white/40 text-sm font-light">Toronto, Ontario</p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">Email</h4>
-              <p className="text-gray-500 text-sm">info@akharawrestling.com</p>
+              <h4 className="font-medium mb-2">Email</h4>
+              <p className="text-white/40 text-sm font-light">info@akharawrestling.com</p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2">Phone</h4>
-              <p className="text-gray-500 text-sm">(416) XXX-XXXX</p>
+              <h4 className="font-medium mb-2">Phone</h4>
+              <p className="text-white/40 text-sm font-light">(416) XXX-XXXX</p>
             </div>
           </div>
         </div>
@@ -475,19 +458,19 @@ export default function Home() {
       {/* Footer */}
       <footer className="py-12 px-6 md:px-12 bg-black border-t border-white/10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-2xl font-bold">AKHARA</div>
+          <div className="text-xl font-medium">AKHARA</div>
           <div className="flex gap-6">
-            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
+            <a href="#" className="text-white/40 hover:text-white transition-colors text-sm">
               Instagram
             </a>
-            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
+            <a href="#" className="text-white/40 hover:text-white transition-colors text-sm">
               Facebook
             </a>
-            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
+            <a href="#" className="text-white/40 hover:text-white transition-colors text-sm">
               YouTube
             </a>
           </div>
-          <p className="text-gray-600 text-sm">
+          <p className="text-white/30 text-sm font-light">
             © 2025 Akhara of Champions. All rights reserved.
           </p>
         </div>
